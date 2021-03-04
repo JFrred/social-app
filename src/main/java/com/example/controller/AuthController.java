@@ -2,9 +2,11 @@ package com.example.controller;
 
 import com.example.dto.AuthenticationResponse;
 import com.example.dto.LoginRequest;
+import com.example.dto.RegisterRequest;
 import com.example.repo.UserRepository;
 import com.example.service.AuthService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
-    private final UserRepository userRepository;
+
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@RequestBody RegisterRequest registerRequest) {
+        authService.signup(registerRequest);
+        return new ResponseEntity("User created successfully.", HttpStatus.OK);
+    }
 
     @PostMapping("/login")
     public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {

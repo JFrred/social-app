@@ -1,5 +1,6 @@
 package com.example.security;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,12 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@AllArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private  JwtProvider jwtProvider;
-    @Autowired
-    private  UserDetailsService userDetailsService;
+    private final JwtProvider jwtProvider;
+    private final UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
@@ -32,7 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String jwt = getJwtFromRequest(httpServletRequest);
 
         if (jwtProvider.validateToken(jwt)) {
-            String username = jwtProvider.getUsernameFromJwt(jwt);
+            String username = jwtProvider.getUsernameFromJWT(jwt);
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
