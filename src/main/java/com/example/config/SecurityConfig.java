@@ -21,16 +21,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        // filter before - if in db is not token assigned to user, creates one
-        http.csrf().disable()
+    public void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/auth/**").permitAll()
-                .anyRequest().authenticated();
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .antMatchers("/api/auth/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated();
     }
 
     @Autowired

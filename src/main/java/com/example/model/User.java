@@ -12,6 +12,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 @Entity
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

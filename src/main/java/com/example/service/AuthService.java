@@ -11,6 +11,7 @@ import com.example.repo.UserRepository;
 import com.example.repo.VerificationTokenRepository;
 import com.example.security.JwtProvider;
 import com.example.util.Constants;
+import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,7 +33,7 @@ import static java.time.Instant.now;
 public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepo;
+    private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepo;
     private final MailContentBuilder mailContentBuilder;
     private final MailService mailService;
@@ -53,37 +54,27 @@ public class AuthService {
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
         user.setUsername(registerRequest.getUsername());
-        user.setEmail(registerRequest.getEmail());
         user.setPassword(encodePassword(registerRequest.getPassword()));
+        user.setEmail(registerRequest.getEmail());
         user.setCreated(now());
         user.setEnabled(false);
 
-        userRepo.save(user);
-
+        userRepository.save(user);
+        log.info("User Registered Successfully, Sending Authentication Email");
         String token = generateVerificationToken(user);
-
         String message = mailContentBuilder.build("Thank you for signing up to Spring Reddit, please click on the below url to activate your account : "
-                + Constants.ACTIVATION_EMAIL + "/" + token + " \n");
-        mailService.sendMail(new NotificationEmail("Please activate your account", user.getEmail(), message));
-    }
+                + Constants.ACTIVATION_EMAIL + "/" + token);
 
-    @Transactional
-    public User getCurrentUser() {
-        org.springframework.security.core.userdetails.User principal =
-                (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext()
-                        .getAuthentication().getPrincipal();
-
-        return userRepo.findUserByUsername(principal.getUsername()).orElseThrow(
-                () -> new SpringRedditException("User not found with name - " + principal.getUsername()));
+        mailService.sendMail(new NotificationEmail( user.getEmail(), "Please Activate your account", message));
     }
 
     @Transactional
     void fetchUserAndEnable(VerificationToken verificationToken) {
         String username = verificationToken.getUser().getUsername();
-        User user = userRepo.findUserByUsername(username).
+        User user = userRepository.findUserByUsername(username).
                 orElseThrow(() -> new SpringRedditException("User not found with username - " + username));
         user.setEnabled(true);
-        userRepo.save(user);
+        userRepository.save(user);
     }
 
     private String generateVerificationToken(User user) {
@@ -104,4 +95,5 @@ public class AuthService {
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }
+
 }
