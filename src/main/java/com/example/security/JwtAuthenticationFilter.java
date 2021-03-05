@@ -1,5 +1,6 @@
 package com.example.security;
 
+import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,21 +30,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-//        String jwt = getJwtFromRequest(httpServletRequest);
-//
-//        if (jwtProvider.validateToken(jwt)) {
-//            String username = jwtProvider.getUsernameFromJwt(jwt);
-//
-//            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-//            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-//                    userDetails.getUsername(),
-//                    null,
-//                    userDetails.getAuthorities()
-//            );
-//            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-//
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//        }
+        String jwt = getJwtFromRequest(httpServletRequest);
+
+        if (jwtProvider.validateToken(jwt)) {
+            String username = jwtProvider.getUsernameFromJwt(jwt);
+
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails.getUsername(),
+                    null,
+                    userDetails.getAuthorities()
+            );
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
         filterChain.doFilter(httpServletRequest,httpServletResponse);
     }
 

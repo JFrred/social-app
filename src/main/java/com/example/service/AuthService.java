@@ -40,6 +40,15 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
 
+    public User getCurrentUser() {
+        org.springframework.security.core.userdetails.User user =
+                (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext()
+                        .getAuthentication().getPrincipal();
+
+        return userRepository.findUserByUsername(user.getUsername())
+                .orElseThrow(() -> new SpringRedditException("Exception occurred while getting current user"));
+    }
+
     public AuthenticationResponse login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
