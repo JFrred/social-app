@@ -2,8 +2,7 @@ package com.example.controller;
 
 import com.example.dto.PostRequest;
 import com.example.model.Post;
-import com.example.model.User;
-import com.example.repo.UserRepository;
+import com.example.service.AuthService;
 import com.example.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,20 +16,19 @@ import java.util.List;
 @AllArgsConstructor
 public class PostController {
 
+    private final AuthService authService;
     private final PostService postService;
-    private final UserRepository userRepository;
 
     @PostMapping
     public ResponseEntity<String> createPost(@RequestBody PostRequest postRequest) {
-        postService.createPost(postRequest);
+        postService.createPost(postRequest, authService.getCurrentUser());
 
         return new ResponseEntity<>("Post has been created successfully", HttpStatus.OK);
     }
 
     @GetMapping("/by-username/{username}")
     public ResponseEntity<List<Post>> getPostsByUsername(@PathVariable String username) {
-        User user = userRepository.findUserByUsername(username).get();
-        List<Post> userPosts = postService.getPostsByUser(user);
+        List<Post> userPosts = postService.getPostsByUser(authService.getCurrentUser());
         return new ResponseEntity<>(userPosts, HttpStatus.OK);
     }
 }

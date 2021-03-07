@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,9 +42,8 @@ public class AuthService {
     private final JwtProvider jwtProvider;
 
     public User getCurrentUser() {
-        org.springframework.security.core.userdetails.User user =
-                (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext()
-                        .getAuthentication().getPrincipal();
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findUserByUsername(loggedInUser.getName()).get();
 
         return userRepository.findUserByUsername(user.getUsername())
                 .orElseThrow(() -> new SpringRedditException("Exception occurred while getting current user"));

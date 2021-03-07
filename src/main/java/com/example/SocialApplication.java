@@ -6,10 +6,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableAsync
-public class StravaCloneApplication {
+public class SocialApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(StravaCloneApplication.class, args);
+        SpringApplication.run(SocialApplication.class, args);
     }
 
 }
