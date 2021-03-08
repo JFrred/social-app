@@ -2,7 +2,7 @@ package com.example.service;
 
 import com.example.mapper.PostMapper;
 import com.example.dto.PostRequest;
-import com.example.model.Post;
+import com.example.model.PostResponse;
 import com.example.model.User;
 import com.example.repo.PostRepository;
 import lombok.AllArgsConstructor;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Slf4j
@@ -20,10 +21,12 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostMapper postMapper;
 
-    public List<Post> getPostsByUser(User user) {
-        return postRepository.findUserPosts(user);
+    @Transactional
+    public List<PostResponse> getPostsByUser(User user) {
+        return postRepository.findByUser(user).stream().map(postMapper::mapToResponse).collect(Collectors.toList());
     }
 
+    @Transactional
     public void createPost(PostRequest postRequest, User user) {
         postRepository.save(postMapper.mapDto(postRequest, user));
     }

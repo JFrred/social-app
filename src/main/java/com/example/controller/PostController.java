@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.dto.PostRequest;
 import com.example.model.Post;
+import com.example.model.PostResponse;
 import com.example.service.AuthService;
 import com.example.service.PostService;
 import lombok.AllArgsConstructor;
@@ -27,8 +28,8 @@ public class PostController {
     }
 
     @GetMapping("/by-username/{username}")
-    public ResponseEntity<List<Post>> getPostsByUsername(@PathVariable String username) {
-        List<Post> userPosts = postService.getPostsByUser(authService.getCurrentUser());
+    public ResponseEntity<List<PostResponse>> getPostsByUsername(@PathVariable String username) {
+        List<PostResponse> userPosts = postService.getPostsByUser(authService.getCurrentUser());
         return new ResponseEntity<>(userPosts, HttpStatus.OK);
     }
 }

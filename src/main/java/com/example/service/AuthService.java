@@ -11,7 +11,6 @@ import com.example.repo.UserRepository;
 import com.example.repo.VerificationTokenRepository;
 import com.example.security.JwtProvider;
 import com.example.util.Constants;
-import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
