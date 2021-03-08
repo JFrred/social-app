@@ -3,7 +3,7 @@ package com.example.service;
 import com.example.dto.AuthenticationResponse;
 import com.example.dto.LoginRequest;
 import com.example.dto.RegisterRequest;
-import com.example.exception.SpringRedditException;
+import com.example.exception.SpringSocialAppException;
 import com.example.model.NotificationEmail;
 import com.example.model.User;
 import com.example.model.VerificationToken;
@@ -44,7 +44,7 @@ public class AuthService {
         User user = userRepository.findUserByUsername(loggedInUser.getName()).get();
 
         return userRepository.findUserByUsername(user.getUsername())
-                .orElseThrow(() -> new SpringRedditException("Exception occurred while getting current user"));
+                .orElseThrow(() -> new SpringSocialAppException("Exception occurred while getting current user"));
     }
 
     public AuthenticationResponse login(LoginRequest loginRequest) {
@@ -79,7 +79,7 @@ public class AuthService {
     void fetchUserAndEnable(VerificationToken verificationToken) {
         String username = verificationToken.getUser().getUsername();
         User user = userRepository.findUserByUsername(username).
-                orElseThrow(() -> new SpringRedditException("User not found with username - " + username));
+                orElseThrow(() -> new SpringSocialAppException("User not found with username - " + username));
         user.setEnabled(true);
         userRepository.save(user);
     }
@@ -95,7 +95,7 @@ public class AuthService {
 
     public void verifyAccount(String token) {
         Optional<VerificationToken> verificationTokenOptional = verificationTokenRepo.findByToken(token);
-        verificationTokenOptional.orElseThrow(() -> new SpringRedditException("Invalid Token"));
+        verificationTokenOptional.orElseThrow(() -> new SpringSocialAppException("Invalid Token"));
         fetchUserAndEnable(verificationTokenOptional.get());
     }
 

@@ -1,6 +1,6 @@
 package com.example.security;
 
-import com.example.exception.SpringRedditException;
+import com.example.exception.SpringSocialAppException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.core.Authentication;
@@ -27,7 +27,7 @@ public class JwtProvider {
             InputStream resourceAsStream = getClass().getResourceAsStream("/springblog.jks");
             keyStore.load(resourceAsStream, "secret".toCharArray());
         } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
-            throw new SpringRedditException("Exception occurred while loading keystore");
+            throw new SpringSocialAppException("Exception occurred while loading keystore");
         }
     }
 
@@ -43,7 +43,7 @@ public class JwtProvider {
         try {
             return keyStore.getCertificate("springblog").getPublicKey();
         } catch (KeyStoreException e) {
-            throw new SpringRedditException("Error occurred while fetching public key from keystore", e);
+            throw new SpringSocialAppException("Error occurred while fetching public key from keystore", e);
         }
     }
 
@@ -51,7 +51,7 @@ public class JwtProvider {
         try {
             return (PrivateKey) keyStore.getKey("springblog", "secret".toCharArray());
         } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
-            throw new SpringRedditException("Exception occured while retrieving public key from keystore");
+            throw new SpringSocialAppException("Exception occured while retrieving public key from keystore");
         }
     }
 

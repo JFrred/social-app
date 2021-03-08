@@ -26,6 +26,7 @@ public class PostService {
         return postRepository.findByUser(user).stream().map(postMapper::mapToResponse).collect(Collectors.toList());
     }
 
+
     @Transactional
     public void createPost(PostRequest postRequest, User user) {
         postRepository.save(postMapper.mapDto(postRequest, user));

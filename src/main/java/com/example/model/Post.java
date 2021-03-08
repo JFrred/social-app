@@ -9,7 +9,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Data
-@Builder
+//@Builder
 @Getter // getters will be used in PostMapper to map from Dto to Post
 @Setter // will be used to map from Post object to PostResponse
 @Entity

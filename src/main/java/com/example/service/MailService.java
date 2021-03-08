@@ -1,8 +1,7 @@
 package com.example.service;
 
-import com.example.exception.SpringRedditException;
+import com.example.exception.SpringSocialAppException;
 import com.example.model.NotificationEmail;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
@@ -39,7 +38,7 @@ public class MailService {
             log.info("Activation email sent!!");
         } catch (MailException e) {
             log.error("Exception occurred while sending mail", e);
-            throw new SpringRedditException("Exception occurred while sending mail to "
+            throw new SpringSocialAppException("Exception occurred while sending mail to "
                     + notificationEmail.getRecipient(), e);
         }
     }

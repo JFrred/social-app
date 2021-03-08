@@ -5,6 +5,7 @@ import com.example.model.Post;
 import com.example.model.PostResponse;
 import com.example.model.User;
 import com.example.repo.CommentRepository;
+import com.example.repo.UserRepository;
 import com.example.repo.VoteRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,9 +18,12 @@ public abstract class PostMapper {
     private CommentRepository commentRepository;
     @Autowired
     private VoteRepository voteRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
+
     @Mapping(target = "user", source = "user")
+    @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
     @Mapping(target = "title", source = "postRequest.title")
     @Mapping(target = "description", source = "postRequest.description")
     @Mapping(target = "voteCount", constant = "0")
@@ -27,7 +31,7 @@ public abstract class PostMapper {
     public abstract Post mapDto(PostRequest postRequest, User user);
 
     @Mapping(target = "postId", source = "id")
-    @Mapping(target = "username", source = "user.username")
+    @Mapping(target = "username", expression = "java(post.getUser().getUsername())")  // TODO: No converter found capable of converting from type [com.example.model.Vote] to type [com.example.model.User]
     @Mapping(target = "title", source = "title")
     @Mapping(target = "description", source = "description")
     @Mapping(target = "createdDate", source = "createdDate")

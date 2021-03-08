@@ -9,10 +9,9 @@ import javax.persistence.Id;
 import java.time.Instant;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@ToString
 @Entity
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
