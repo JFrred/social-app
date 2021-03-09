@@ -1,4 +1,4 @@
-package com.example.model;
+package com.example.dto;
 
 import lombok.*;
 
@@ -8,11 +8,11 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostResponse {
-    private Integer postId;
+    private Long postId;
     private String username;
+    private Instant createdDate;
     private String title;
     private String description;
-    private Instant createdDate;
-    private int voteCount;
-    private int commentCount;
+    private Integer voteCount;
+    private Integer commentCount;
 }
