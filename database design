@@ -1,0 +1,67 @@
+CREATE DATABASE strava_clone_db;
+USE strava_clone_db;
+
+CREATE TABLE user (
+	id BIGINT AUTO_INCREMENT,
+	username VARCHAR(255) UNIQUE,
+	password VARCHAR(255) NOT NULL,
+	email VARCHAR(255) UNIQUE,
+	created DATETIME,
+	enabled BIT(1),
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE post (
+	id BIGINT AUTO_INCREMENT,
+	user_id BIGINT(20),
+  title VARCHAR(255) NOT NULL,
+  description VARCHAR(255),
+  practice_type INT(11),
+	distance INT,
+	start_time TIME,
+	end_time TIME,
+  vote_count INT,
+  comment_count INT,
+  FOREIGN KEY (user_id) REFERENCES user(id),
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE comment (
+	id BIGINT(20) AUTO_INCREMENT,
+  created_date DATETIME,
+  text VARCHAR(255),
+  post_id BIGINT(20),
+   BIGINT(20),
+  FOREIGN KEY (post_id) REFERENCES post(id),
+  FOREIGN KEY (user_id) REFERENCES user(id),
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE vote ( 
+	vote_id BIGINT(20) AUTO_INCREMENT,
+  post_id BIGINT(20),
+  user_id BIGINT(20),
+  FOREIGN KEY (post_id) REFERENCES post(id),
+  FOREIGN KEY (user_id) REFERENCES user(id),
+  PRIMARY KEY (vote_id)
+);
+
+CREATE TABLE verification_token (
+	id BIGINT(20) AUTO_INCREMENT,
+	expiry_date DATETIME,
+	token VARCHAR(255),
+	user_id BIGINT(20),
+	FOREIGN KEY (user_id) REFERENCES user(id),
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE refresh_token (
+	id BIGINT(20) AUTO_INCREMENT,
+	created_date DATETIME,
+	token VARCHAR(255),
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE hibernate_sequence(
+	next_bal BIGINT(20)
+);
