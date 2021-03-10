@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VoteDto {
-    private Long postId;
+public class VoteResponse {
+    private String username;
     private VoteType voteType;
 }
