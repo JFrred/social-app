@@ -65,13 +65,13 @@ public class AuthService {
         user.setEmail(registerRequest.getEmail());
         user.setCreated(now());
         user.setEnabled(false);
-
         userRepository.save(user);
+
         log.info("User Registered Successfully, Sending Authentication Email");
         String token = generateVerificationToken(user);
+
         String message = mailContentBuilder.build("Thank you for signing up to Spring Reddit, please click on the below url to activate your account : "
                 + Constants.ACTIVATION_EMAIL + "/" + token);
-
         mailService.sendMail(new NotificationEmail( user.getEmail(), "Please Activate your account", message));
     }
 

@@ -13,13 +13,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 public class Vote {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long vote_id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "vote_id")
+    private Long voteId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-    private VoteType voteType;
+    @Column(name = "vote_direction")
+    private Integer voteDirection;
 }

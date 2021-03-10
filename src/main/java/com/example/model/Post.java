@@ -7,11 +7,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-@Data
-//@Builder
-@Getter // getters will be used in PostMapper to map from Dto to Post
-@Setter // will be used to map from Post object to PostResponse
+//@Getter // getters will be used in PostMapper to map from Dto to Post
+//@Setter // will be used to map from Post object to PostResponse
+@Data // - toString, equals + hash, getters, setters, requiredArgsConstrucotr
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,4 +29,5 @@ public class Post {
     private String description;
     private int voteCount;
     private int commentCount;
+
 }
